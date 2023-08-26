@@ -22,7 +22,6 @@ while True:
     print("2. View expenses")
     print("3. Delete an expense")
     print("4. Edit an expense")
-    print("5. View expenses by category")
 
     choice = int(input("Enter your choice: "))
     if choice == 1:
@@ -53,6 +52,7 @@ while True:
         print("Select an option:")
         print("1. View all expenses")
         print("2. View monthly expenses")
+        print("3. View expenses by category")
         
         view_choice = int(input("Enter your choice: "))
         if view_choice == 1:
@@ -67,6 +67,18 @@ while True:
             expenses = cur.fetchall()
             for expense in expenses:
                 print(f"Category: {expense[0]}, Total: {expense[1]}")
+        elif view_choice == 3:
+            print("Select a category:")
+            cur.execute("SELECT DISTINCT category FROM expenses")
+            categories = cur.fetchall()
+            for i, category in enumerate(categories):
+                print(f"{i+1}. {categories[i][0]}")
+            category_choice = int(input("Enter your choice: "))
+            category = categories[category_choice-1][0]
+            cur.execute("SELECT * FROM expenses WHERE category = ?", (category,))
+            expenses = cur.fetchall()
+            for expense in expenses:
+                print(expense)    
         else:
             exit()
 
@@ -106,18 +118,6 @@ while True:
         cur.execute("UPDATE expenses SET Date = ?, description = ?, category = ?, price = ? WHERE id = ?", (date, description, category, price, expense_id))
         conn.commit()
         
-    elif choice == 5:
-        print("Select a category:")
-        cur.execute("SELECT DISTINCT category FROM expenses")
-        categories = cur.fetchall()
-        for i, category in enumerate(categories):
-            print(f"{i+1}. {categories[i][0]}")
-        category_choice = int(input("Enter your choice: "))
-        category = categories[category_choice-1][0]
-        cur.execute("SELECT * FROM expenses WHERE category = ?", (category,))
-        expenses = cur.fetchall()
-        for expense in expenses:
-            print(expense)    
     else:
         exit()
 
