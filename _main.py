@@ -88,8 +88,8 @@ while True:
 
         expenses = cur.fetchall()
 
-        for i, expense in enumerate(expenses):
-            print(f"{i+1}. {expense}")
+        for expense in expenses:
+            print(expense)
 
         expense_id = int(input("Enter the ID of the expense to delete: "))
 
@@ -102,8 +102,8 @@ while True:
         cur.execute("SELECT * FROM expenses")
         expenses = cur.fetchall()
 
-        for i, expense in enumerate(expenses):
-            print(f"{i+1}. {expense}")
+        for expense in expenses:
+            print(expense)
 
         expense_id = int(input("Enter the ID of the expense to edit: "))
         cur.execute("SELECT * FROM expenses WHERE id = ?", (expense_id,))
